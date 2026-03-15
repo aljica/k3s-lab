@@ -21,6 +21,7 @@
   template:
     src: flask-secret.yaml.j2
     dest: /tmp/flask-secret.yaml
+    owner: vagrant
     mode: '0600'
 
 - name: Render Flask deployment
