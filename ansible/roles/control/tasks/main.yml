@@ -1,0 +1,27 @@
+---
+- name: Install Docker
+  apt:
+    name:
+      - docker.io
+      - python3-pip
+    state: present
+    update_cache: yes
+
+- name: Add vagrant user to docker group
+  user:
+    name: vagrant
+    groups: docker
+    append: yes
+
+- name: Install docker Python SDK
+  pip:
+    name: docker
+    executable: pip3
+
+- name: Login to Docker Hub
+  become_user: vagrant
+  community.docker.docker_login:
+    username: "{{ docker_hub_username }}"
+    password: "{{ docker_hub_pat_token }}"
+    registry_url: https://index.docker.io/v1/
+  no_log: true
