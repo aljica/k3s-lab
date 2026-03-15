@@ -1,0 +1,10 @@
+# Vagrant folder - only push Vagrantfile
+vagrant/*
+!vagrant/Vagrantfile
+
+# Ansible secrets - never commit 
+ansible/vars/secrets.yml
+
+# Editor
+.vscode/
+*.swp
