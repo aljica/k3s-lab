@@ -19,7 +19,7 @@
   hosts: database
   become: yes
   vars_files:
-    - vars/secrets.yml
+    - /vagrant/secrets.yml
     - vars/vars.yml
   roles:
     - database
