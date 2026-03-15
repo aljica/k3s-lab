@@ -33,8 +33,7 @@ echo ""
 
 echo "--- K3s service ---"
 check "K3s running on master" "ansible master -m shell -a 'systemctl is-active k3s'" "active"
-check "K3s agent running on worker1" "ansible worker1 -m shell -a 'systemctl is-active k3s-agent'" "active"
-check "K3s agent running on worker2" "ansible worker2 -m shell -a 'systemctl is-active k3s-agent'" "active"
+check "K3s agent running on workers" "ansible workers -m shell -a 'systemctl is-active k3s-agent'" "active"
 
 echo ""
 echo "--- Cluster nodes ---"
