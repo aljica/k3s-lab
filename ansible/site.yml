@@ -1,4 +1,13 @@
 ---
+- name: Configure control node
+  hosts: control
+  become: yes
+  vars_files:
+    - /vagrant/secrets.yml
+    - vars/vars.yml
+  roles:
+    - control
+
 - name: Install K3s master
   hosts: master
   become: yes
