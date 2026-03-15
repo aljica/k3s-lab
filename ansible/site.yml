@@ -1,2 +1,16 @@
 ---
-# Playbooks added in subsequent branches
+- name: Install K3s master
+  hosts: master
+  become: yes
+  vars_files:
+    - vars/vars.yml
+  roles:
+    - k3s-master
+
+- name: Install K3s workers
+  hosts: workers
+  become: yes
+  vars_files:
+    - vars/vars.yml
+  roles:
+    - k3s-worker

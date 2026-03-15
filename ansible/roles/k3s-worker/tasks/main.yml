@@ -1,0 +1,20 @@
+---
+- name: Download K3s install script
+  get_url:
+    url: https://get.k3s.io
+    dest: /tmp/k3s-install.sh
+    mode: '0755'
+
+- name: Install K3s worker
+  shell: /tmp/k3s-install.sh
+  environment:
+    INSTALL_K3S_EXEC: "agent"
+    K3S_URL: "https://{{ master_ip }}:6443"
+    K3S_TOKEN: "{{ hostvars[groups['master'][0]]['k3s_token'] }}"
+  args:
+    creates: /usr/local/bin/k3s
+  register: k3s_worker_output
+
+- name: Show K3s worker install output
+  debug:
+    msg: "{{ k3s_worker_output.stdout_lines }}"

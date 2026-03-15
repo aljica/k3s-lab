@@ -1,0 +1,38 @@
+---
+- name: Download K3s install script
+  get_url:
+    url: https://get.k3s.io
+    dest: /tmp/k3s-install.sh
+    mode: '0755'
+
+- name: Install K3s master
+  shell: /tmp/k3s-install.sh
+  environment:
+    INSTALL_K3S_EXEC: "server --bind-address {{ master_ip }} --node-ip {{ master_ip }}"
+  args:
+    creates: /usr/local/bin/k3s
+  register: k3s_master_output
+
+- name: Show K3s master install output
+  debug:
+    msg: "{{ k3s_master_output.stdout_lines }}"
+
+- name: Wait for K3s to be ready
+  wait_for:
+    path: /var/lib/rancher/k3s/server/node-token
+    timeout: 60
+
+- name: Read node token
+  slurp:
+    src: /var/lib/rancher/k3s/server/node-token
+  register: node_token
+
+- name: Save token as fact
+  set_fact:
+    k3s_token: "{{ node_token.content | b64decode | trim }}"
+    cacheable: yes
+
+- name: Ensure kubectl works for vagrant user
+  file:
+    path: /etc/rancher/k3s/k3s.yaml
+    mode: '0644'
