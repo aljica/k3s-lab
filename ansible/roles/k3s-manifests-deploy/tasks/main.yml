@@ -54,8 +54,4 @@
 
 - name: Wait for Flask deployment to be ready
   become_user: vagrant
-  kubernetes.core.k8s_rollout_status:
-    name: flask
-    kind: Deployment
-    namespace: default
-    timeout: 120
+  shell: kubectl rollout status deployment/flask --timeout=120s
