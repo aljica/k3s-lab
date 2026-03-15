@@ -41,12 +41,3 @@
     - vars/vars.yml
   roles:
     - k3s-manifests-build
-
-- name: Deploy Flask to K3s
-  hosts: master
-  become: yes
-  vars_files:
-    - /vagrant/secrets.yml
-    - vars/vars.yml
-    roles:
-    - k3s-manifests-deploy
