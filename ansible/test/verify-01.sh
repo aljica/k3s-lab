@@ -46,5 +46,5 @@ check "Database SSH" "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa vagrant@1
 
 echo ""
 echo "================================"
-echo " Results: ${GREEN}${PASS} passed${NC}, ${RED}${FAIL} failed${NC}"
+printf " Results: ${GREEN}${PASS} passed${NC}, ${RED}${FAIL} failed${NC}"
 echo "================================"
