@@ -45,6 +45,8 @@
 - name: Deploy Flask to K3s
   hosts: master
   become: yes
+  environment:
+    KUBECONFIG: /etc/rancher/k3s/k3s.yaml
   vars_files:
     - /vagrant/secrets.yml
     - vars/vars.yml
