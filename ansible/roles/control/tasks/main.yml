@@ -24,4 +24,3 @@
     username: "{{ docker_hub_username }}"
     password: "{{ docker_hub_pat_token }}"
     registry_url: https://index.docker.io/v1/
-  no_log: true
