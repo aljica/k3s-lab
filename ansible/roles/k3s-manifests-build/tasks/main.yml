@@ -1,0 +1,18 @@
+---
+- name: Build Docker image
+  become_user: vagrant
+  community.docker.docker_image:
+    name: "{{ docker_hub_username }}/flask-app"
+    tag: latest
+    build:
+      path: /home/vagrant/k3s/ansible/roles/k3s-manifests-build/files/
+    source: build
+    force_source: yes
+
+- name: Push image to Docker Hub
+  become_user: vagrant
+  community.docker.docker_image:
+    name: "{{ docker_hub_username }}/flask-app"
+    tag: latest
+    push: yes
+    source: local
