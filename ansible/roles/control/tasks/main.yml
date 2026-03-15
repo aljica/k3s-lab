@@ -13,6 +13,9 @@
     groups: docker
     append: yes
 
+- name: Reset connection to pick up new group
+  meta: reset_connection
+
 - name: Install docker Python SDK
   pip:
     name: docker
@@ -23,4 +26,3 @@
   community.docker.docker_login:
     username: "{{ docker_hub_username }}"
     password: "{{ docker_hub_pat_token }}"
-    registry_url: https://index.docker.io/v1/
