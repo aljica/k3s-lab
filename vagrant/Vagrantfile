@@ -29,7 +29,9 @@ Vagrant.configure("2") do |config|
       apt-get update -y
       apt-get install -y software-properties-common
       add-apt-repository --yes --update ppa:ansible/ansible
-      apt-get install -y ansible git docker.io
+      apt-get install -y ansible git docker.io python3-pip
+
+      pip3 install docker
 
       # Add vagrant to docker group during provisioning
       usermod -aG docker vagrant
@@ -41,9 +43,6 @@ Vagrant.configure("2") do |config|
 
       sudo -u vagrant git clone #{ANSIBLE_REPO} \
         /home/vagrant/k3s
-
-      # Checkout 04 branch for testing
-      sudo -u vagrant git -C /home/vagrant/k3s checkout 04-flask-deployment
 
       # Install Ansible collections from requirements.yml
       sudo -u vagrant ansible-galaxy collection install \
