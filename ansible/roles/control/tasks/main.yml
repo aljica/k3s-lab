@@ -13,9 +13,6 @@
     groups: docker
     append: yes
 
-- name: Reset connection to pick up new group
-  meta: reset_connection
-
 - name: Install docker Python SDK
   pip:
     name: docker
@@ -23,6 +20,7 @@
 
 - name: Login to Docker Hub
   become_user: vagrant
+  become_method: su
   community.docker.docker_login:
     username: "{{ docker_hub_username }}"
     password: "{{ docker_hub_pat_token }}"
