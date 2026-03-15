@@ -14,6 +14,9 @@
   args:
     creates: /usr/local/bin/k3s
   register: k3s_worker_output
+  retries: 3
+  delay: 30
+  until: k3s_worker_output.rc == 0
 
 - name: Show K3s worker install output
   debug:
