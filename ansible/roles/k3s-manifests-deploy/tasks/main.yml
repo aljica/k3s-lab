@@ -1,0 +1,61 @@
+---
+- name: Install kubernetes Python client
+  pip:
+    name: kubernetes
+    executable: pip3
+
+- name: Render Flask configmap
+  template:
+    src: flask-configmap.yaml.j2
+    dest: /tmp/flask-configmap.yaml
+    mode: '0644'
+
+- name: Render Flask secret
+  template:
+    src: flask-secret.yaml.j2
+    dest: /tmp/flask-secret.yaml
+    mode: '0600'
+
+- name: Render Flask deployment
+  template:
+    src: flask-deployment.yaml.j2
+    dest: /tmp/flask-deployment.yaml
+    mode: '0644'
+
+- name: Render Flask service
+  template:
+    src: flask-service.yaml.j2
+    dest: /tmp/flask-service.yaml
+    mode: '0644'
+
+- name: Apply ConfigMap
+  become_user: vagrant
+  kubernetes.core.k8s:
+    state: present
+    src: /tmp/flask-configmap.yaml
+
+- name: Apply Secret
+  become_user: vagrant
+  kubernetes.core.k8s:
+    state: present
+    src: /tmp/flask-secret.yaml
+
+- name: Apply Deployment
+  become_user: vagrant
+  kubernetes.core.k8s:
+    state: present
+    src: /tmp/flask-deployment.yaml
+
+- name: Apply Service
+  become_user: vagrant
+  kubernetes.core.k8s:
+    state: present
+    src: /tmp/flask-service.yaml
+
+- name: Wait for Flask deployment to be ready
+  become_user: vagrant
+  kubernetes.core.k8s_rollout_status:
+    name: flask
+    kind: Deployment
+    namespace: default
+    timeout: 120
