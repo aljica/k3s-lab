@@ -8,5 +8,5 @@ hub.docker.com
 → Security
 → New Access Token
 → name it "k3s-lab"
-→ permissions: Read & Write
+→ permissions: Read, Write & Delete
 → copy the token (shown only once)
