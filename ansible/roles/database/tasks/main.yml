@@ -1,0 +1,65 @@
+---
+- name: Install PostgreSQL
+  apt:
+    name:
+      - postgresql
+      - postgresql-contrib
+      - python3-psycopg2
+    state: present
+    update_cache: yes
+
+- name: Ensure PostgreSQL is started and enabled
+  systemd:
+    name: postgresql
+    state: started
+    enabled: yes
+
+- name: Create database user
+  become_user: postgres
+  postgresql_user:
+    name: "{{ db_user }}"
+    password: "{{ db_password }}"
+    state: present
+
+- name: Create database
+  become_user: postgres
+  postgresql_db:
+    name: "{{ db_name }}"
+    owner: "{{ db_user }}"
+    state: present
+
+- name: Grant all privileges to appuser
+  become_user: postgres
+  postgresql_query:
+    db: "{{ db_name }}"
+    query: |
+      GRANT ALL ON ALL TABLES IN SCHEMA public TO {{ db_user }};
+      GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO {{ db_user }};
+
+- name: Create visits table
+  become_user: postgres
+  postgresql_query:
+    db: "{{ db_name }}"
+    query: "{{ lookup('template', 'schema.sql.j2') }}"
+
+- name: Configure PostgreSQL to listen on all interfaces
+  lineinfile:
+    path: /etc/postgresql/14/main/postgresql.conf
+    regexp: "^#?listen_addresses"
+    line: "listen_addresses = '*'"
+    state: present
+  notify: restart postgresql
+
+- name: Allow K3s nodes to connect to PostgreSQL
+  lineinfile:
+    path: /etc/postgresql/14/main/pg_hba.conf
+    line: "host    {{ db_name }}    {{ db_user }}    {{ k3s_subnet }}/24    md5"
+    state: present
+  notify: restart postgresql
+
+- name: Allow K3s pod network to connect to PostgreSQL
+  lineinfile:
+    path: /etc/postgresql/14/main/pg_hba.conf
+    line: "host    {{ db_name }}    {{ db_user }}    {{ k3s_pod_subnet }}/16    md5"
+    state: present
+  notify: restart postgresql

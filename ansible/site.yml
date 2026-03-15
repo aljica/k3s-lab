@@ -14,3 +14,12 @@
     - vars/vars.yml
   roles:
     - k3s-worker
+
+- name: Configure database
+  hosts: database
+  become: yes
+  vars_files:
+    - vars/secrets.yml
+    - vars/vars.yml
+  roles:
+    - database
