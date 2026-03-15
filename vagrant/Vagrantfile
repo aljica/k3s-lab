@@ -34,7 +34,7 @@ Vagrant.configure("2") do |config|
       cp /home/vagrant/.ssh/id_rsa.pub /vagrant/control_key.pub
 
       sudo -u vagrant git clone #{ANSIBLE_REPO} \
-        /home/vagrant/ansible
+        /home/vagrant/k3s
 
       echo "=== Control node ready ==="
     SHELL
