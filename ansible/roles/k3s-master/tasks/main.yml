@@ -8,7 +8,7 @@
 - name: Install K3s master
   shell: /tmp/k3s-install.sh
   environment:
-    INSTALL_K3S_EXEC: "server --bind-address {{ master_ip }} --node-ip {{ master_ip }}"
+    INSTALL_K3S_EXEC: "server --bind-address {{ master_ip }} --node-ip {{ master_ip }} --flannel-iface enp0s8"
   args:
     creates: /usr/local/bin/k3s
   register: k3s_master_output
