@@ -28,6 +28,12 @@
     owner: "{{ db_user }}"
     state: present
 
+- name: Create visits table
+  become_user: postgres
+  postgresql_query:
+    db: "{{ db_name }}"
+    query: "{{ lookup('template', 'schema.sql.j2') }}"
+
 - name: Grant all privileges to appuser
   become_user: postgres
   postgresql_query:
@@ -35,12 +41,6 @@
     query: |
       GRANT ALL ON ALL TABLES IN SCHEMA public TO {{ db_user }};
       GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO {{ db_user }};
-
-- name: Create visits table
-  become_user: postgres
-  postgresql_query:
-    db: "{{ db_name }}"
-    query: "{{ lookup('template', 'schema.sql.j2') }}"
 
 - name: Configure PostgreSQL to listen on all interfaces
   lineinfile:
