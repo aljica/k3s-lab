@@ -34,7 +34,7 @@ echo ""
 
 echo "--- Ansible ping ---"
 check "Master reachable"   "ansible master   -m ping" "pong"
-check "Worker1 reachable"  "ansible workers  -m ping" "pong"
+check "Workers reachable"  "ansible workers  -m ping" "pong"
 check "Database reachable" "ansible database -m ping" "pong"
 
 echo ""
