@@ -1,18 +1,4 @@
 ---
-- name: Install Docker
-  apt:
-    name:
-      - docker.io
-      - python3-pip
-    state: present
-    update_cache: yes
-
-- name: Add vagrant user to docker group
-  user:
-    name: vagrant
-    groups: docker
-    append: yes
-
 - name: Install docker Python SDK
   pip:
     name: docker
