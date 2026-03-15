@@ -45,8 +45,8 @@ check "visits table exists" "ansible database -m shell -a 'sudo -u postgres psql
 
 echo ""
 echo "--- pg_hba.conf ---"
-check "Host network allowed" "ansible database -m shell -a 'cat /etc/postgresql/14/main/pg_hba.conf'" "192.168.56.0"
-check "Pod network allowed" "ansible database -m shell -a 'cat /etc/postgresql/14/main/pg_hba.conf'" "10.42.0.0"
+check "Host network allowed" "ansible database -b -m shell -a 'cat /etc/postgresql/14/main/pg_hba.conf'" "192.168.56.0"
+check "Pod network allowed" "ansible database -b -m shell -a 'cat /etc/postgresql/14/main/pg_hba.conf'" "10.42.0.0"
 
 echo ""
 echo "================================"
